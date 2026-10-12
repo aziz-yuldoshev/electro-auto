@@ -1,0 +1,164 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Buyurtma berish — ELECTRO AUTO{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg"
+                 style="background:#0d1117; color:white; border-radius:20px;">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- HEADER -->
+                    <div class="text-center mb-4">
+
+                        <div style="font-size:45px;">
+                            🚗
+                        </div>
+
+                        <h2 class="fw-bold mt-2">
+                            Avtomobilga buyurtma berish
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            {{ car.brand.name }} {{ car.model }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- CAR INFO -->
+                    <div class="p-3 mb-4"
+                         style="
+                            background:#151b23;
+                            border-radius:14px;
+                            border:1px solid #252d38;
+                         ">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <small class="text-secondary">
+                                    Tanlangan avtomobil
+                                </small>
+
+                                <div class="fw-bold mt-1">
+                                    {{ car.brand.name }} {{ car.model }}
+                                </div>
+                            </div>
+
+                            {% if car.price %}
+                                <div class="text-primary fw-bold fs-5">
+                                    {{ car.price }} $
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ERRORS -->
+                    {% if form.errors %}
+
+                        <div class="alert alert-danger"
+                             style="border-radius:12px;">
+
+                            <strong>
+                                Xatolik!
+                            </strong>
+
+                            <br>
+
+                            Iltimos, ma'lumotlarni to‘g‘ri kiriting.
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- FORM -->
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <!-- FULL NAME -->
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Ism va familiya
+                            </label>
+
+                            {{ form.full_name }}
+
+                        </div>
+
+
+                        <!-- PHONE -->
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Telefon raqam
+                            </label>
+
+                            {{ form.phone }}
+
+                        </div>
+
+
+                        <!-- COMMENT -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Qo‘shimcha izoh
+                            </label>
+
+                            {{ form.comment }}
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+                        <div class="d-flex gap-2">
+
+                            <a href="{% url 'car_detail' car.pk %}"
+                               class="btn btn-outline-light w-50 py-3 fw-bold"
+                               style="border-radius:12px;">
+
+                                ← Orqaga
+
+                            </a>
+
+
+                            <button type="submit"
+                                    class="btn btn-primary w-50 py-3 fw-bold"
+                                    style="border-radius:12px;">
+
+                                🚗 Buyurtma berish
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,781 @@
+{% extends 'base.html' %}
+
+{% block title %}Avtomobillar — ELECTRO AUTO{% endblock %}
+
+{% block content %}
+
+<style>
+    .catalog-page {
+        padding: 50px 0 80px;
+    }
+
+    .page-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .page-subtitle {
+        color: #94a3b8;
+        margin-top: 10px;
+    }
+
+    .filter-card {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 20px;
+        padding: 25px;
+        margin: 35px 0;
+    }
+
+    .filter-label {
+        color: #cbd5e1;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: #fff;
+        border-radius: 10px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background: #0f172a;
+        color: #fff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+    }
+
+    .form-control::placeholder {
+        color: #64748b;
+    }
+
+    .form-select option {
+        background: #0f172a;
+        color: #fff;
+    }
+
+    .car-card {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 20px;
+        overflow: hidden;
+        height: 100%;
+        transition: .3s;
+    }
+
+    .car-card:hover {
+        transform: translateY(-6px);
+        border-color: #334155;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, .25);
+    }
+
+    .car-image {
+        height: 230px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .image-placeholder {
+        height: 230px;
+        background: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #64748b;
+        gap: 10px;
+    }
+
+    .image-placeholder i {
+        font-size: 60px;
+    }
+
+    .car-body {
+        padding: 22px;
+    }
+
+    .brand-name {
+        color: #60a5fa;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+    }
+
+    .car-name {
+        color: #fff;
+        font-size: 23px;
+        font-weight: 800;
+        margin: 5px 0;
+    }
+
+    .car-year {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 12px;
+    }
+
+    .status-available {
+        color: #4ade80;
+        background: rgba(34, 197, 94, .12);
+    }
+
+    .status-reserved {
+        color: #fbbf24;
+        background: rgba(245, 158, 11, .12);
+    }
+
+    .status-sold {
+        color: #f87171;
+        background: rgba(239, 68, 68, .12);
+    }
+
+    .status-coming {
+        color: #60a5fa;
+        background: rgba(96, 165, 250, .12);
+    }
+
+    .specs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .spec {
+        background: #0f172a;
+        border-radius: 10px;
+        padding: 10px 5px;
+        text-align: center;
+    }
+
+    .spec i {
+        color: #60a5fa;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .spec-value {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .spec-label {
+        color: #64748b;
+        font-size: 10px;
+    }
+
+    .price {
+        color: #fff;
+        font-size: 25px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .btn-detail {
+        width: 100%;
+        border-radius: 10px;
+        padding: 11px;
+        font-weight: 700;
+        background: #2563eb;
+        border: none;
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        transition: .3s;
+    }
+
+    .btn-detail:hover {
+        background: #1d4ed8;
+        color: #fff;
+    }
+
+    .empty-state {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 20px;
+        padding: 70px 20px;
+        text-align: center;
+    }
+
+    .empty-state i {
+        font-size: 65px;
+        color: #475569;
+    }
+
+    .empty-state h3 {
+        color: #fff;
+        margin-top: 20px;
+    }
+
+    .empty-state p {
+        color: #64748b;
+    }
+
+    .result-count {
+        color: #94a3b8;
+        margin-bottom: 20px;
+    }
+
+    .btn-reset {
+        border: 1px solid #334155;
+        color: #cbd5e1;
+        border-radius: 10px;
+        padding: 10px 18px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-reset:hover {
+        background: #1e293b;
+        color: #fff;
+    }
+</style>
+
+
+<div class="catalog-page">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="text-center mb-4">
+
+            <div class="brand-name mb-2">
+                ELECTRO AUTO
+            </div>
+
+            <h1 class="page-title">
+                Elektr avtomobillar
+            </h1>
+
+            <p class="page-subtitle">
+                O‘zingizga mos premium elektromobilni toping
+            </p>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <div class="filter-card">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <!-- SEARCH -->
+
+                    <div class="col-lg-4">
+
+                        <label class="filter-label">
+                            Qidirish
+                        </label>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            class="form-control"
+                            placeholder="Tesla, BYD, Zeekr..."
+                        >
+
+                    </div>
+
+
+                    <!-- BRAND -->
+
+                    <div class="col-lg-2">
+
+                        <label class="filter-label">
+                            Brend
+                        </label>
+
+                        <select name="brand" class="form-select">
+
+                            <option value="">
+                                Barcha brendlar
+                            </option>
+
+                            {% for brand in brands %}
+
+                                <option
+                                    value="{{ brand.id }}"
+                                    {% if selected_brand == brand.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ brand.name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="col-lg-2">
+
+                        <label class="filter-label">
+                            Kategoriya
+                        </label>
+
+                        <select name="category" class="form-select">
+
+                            <option value="">
+                                Barchasi
+                            </option>
+
+                            {% for category in categories %}
+
+                                <option
+                                    value="{{ category.id }}"
+                                    {% if selected_category == category.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ category.name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SORT -->
+
+                    <div class="col-lg-4">
+
+                        <label class="filter-label">
+                            Saralash
+                        </label>
+
+                        <select name="sort" class="form-select">
+
+                            <option
+                                value="newest"
+                                {% if sort == "newest" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Eng yangi
+                            </option>
+
+                            <option
+                                value="price_low"
+                                {% if sort == "price_low" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Narx: arzon → qimmat
+                            </option>
+
+                            <option
+                                value="price_high"
+                                {% if sort == "price_high" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Narx: qimmat → arzon
+                            </option>
+
+                            <option
+                                value="range_high"
+                                {% if sort == "range_high" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Yurish masofasi: yuqori
+                            </option>
+
+                            <option
+                                value="power_high"
+                                {% if sort == "power_high" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Quvvat: yuqori
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MIN PRICE -->
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Minimal narx
+                        </label>
+
+                        <input
+                            type="number"
+                            name="min_price"
+                            value="{{ min_price }}"
+                            class="form-control"
+                            placeholder="Masalan: 30000"
+                        >
+
+                    </div>
+
+
+                    <!-- MAX PRICE -->
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Maksimal narx
+                        </label>
+
+                        <input
+                            type="number"
+                            name="max_price"
+                            value="{{ max_price }}"
+                            class="form-control"
+                            placeholder="Masalan: 100000"
+                        >
+
+                    </div>
+
+
+                    <!-- MIN RANGE -->
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Min. range (km)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="min_range"
+                            value="{{ min_range }}"
+                            class="form-control"
+                            placeholder="400"
+                        >
+
+                    </div>
+
+
+                    <!-- MAX RANGE -->
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Max. range (km)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="max_range"
+                            value="{{ max_range }}"
+                            class="form-control"
+                            placeholder="800"
+                        >
+
+                    </div>
+
+
+                    <!-- YEAR -->
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Min. yil
+                        </label>
+
+                        <input
+                            type="number"
+                            name="min_year"
+                            value="{{ min_year }}"
+                            class="form-control"
+                            placeholder="2023"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <label class="filter-label">
+                            Max. yil
+                        </label>
+
+                        <input
+                            type="number"
+                            name="max_year"
+                            value="{{ max_year }}"
+                            class="form-control"
+                            placeholder="2026"
+                        >
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="col-md-6 d-flex align-items-end gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-4"
+                        >
+                            <i class="bi bi-search me-1"></i>
+                            Qidirish
+                        </button>
+
+                        <a
+                            href="{% url 'car_list' %}"
+                            class="btn-reset"
+                        >
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Tozalash
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- RESULT COUNT -->
+
+        <div class="result-count">
+
+            <i class="bi bi-car-front me-1"></i>
+
+            Topilgan avtomobillar:
+            <strong class="text-white">
+                {{ cars|length }}
+            </strong>
+
+        </div>
+
+
+        <!-- CARS -->
+
+        {% if cars %}
+
+            <div class="row g-4">
+
+                {% for car in cars %}
+
+                    <div class="col-md-6 col-xl-4">
+
+                        <div class="car-card">
+
+                            <!-- IMAGE -->
+
+                            {% if car.main_image %}
+
+                                <img
+                                    src="{{ car.main_image.url }}"
+                                    alt="{{ car.full_name }}"
+                                    class="car-image"
+                                >
+
+                            {% else %}
+
+                                <div class="image-placeholder">
+
+                                    <i class="bi bi-car-front"></i>
+
+                                    <span>
+                                        Rasm mavjud emas
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- BODY -->
+
+                            <div class="car-body">
+
+                                <div class="brand-name">
+                                    {{ car.brand.name }}
+                                </div>
+
+                                <div class="car-name">
+                                    {{ car.model }}
+                                </div>
+
+                                <div class="car-year">
+                                    {{ car.year }} yil
+
+                                    {% if car.category %}
+                                        • {{ car.category.name }}
+                                    {% endif %}
+                                </div>
+
+
+                                <!-- STATUS -->
+
+                                {% if car.status == "available" %}
+
+                                    <span class="status status-available">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Mavjud
+                                    </span>
+
+                                {% elif car.status == "reserved" %}
+
+                                    <span class="status status-reserved">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Band qilingan
+                                    </span>
+
+                                {% elif car.status == "sold" %}
+
+                                    <span class="status status-sold">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        Sotilgan
+                                    </span>
+
+                                {% elif car.status == "coming_soon" %}
+
+                                    <span class="status status-coming">
+                                        <i class="bi bi-stars me-1"></i>
+                                        Tez orada
+                                    </span>
+
+                                {% endif %}
+
+
+                                <!-- SPECS -->
+
+                                <div class="specs">
+
+                                    <div class="spec">
+
+                                        <i class="bi bi-battery-charging"></i>
+
+                                        <div class="spec-value">
+                                            {{ car.battery_capacity }}
+                                        </div>
+
+                                        <div class="spec-label">
+                                            kWh
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="spec">
+
+                                        <i class="bi bi-speedometer2"></i>
+
+                                        <div class="spec-value">
+                                            {{ car.range_km }}
+                                        </div>
+
+                                        <div class="spec-label">
+                                            km range
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="spec">
+
+                                        <i class="bi bi-lightning-charge"></i>
+
+                                        <div class="spec-value">
+                                            {{ car.power_hp }}
+                                        </div>
+
+                                        <div class="spec-label">
+                                            HP
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- PRICE -->
+
+                                <div class="price">
+                                    ${{ car.price|floatformat:0 }}
+                                </div>
+
+
+                                <!-- DETAIL -->
+
+                                <a
+                                    href="{% url 'car_detail' car.pk %}"
+                                    class="btn-detail"
+                                >
+                                    <i class="bi bi-eye me-1"></i>
+                                    Batafsil
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <!-- EMPTY -->
+
+            <div class="empty-state">
+
+                <i class="bi bi-car-front"></i>
+
+                <h3>
+                    Avtomobil topilmadi
+                </h3>
+
+                <p>
+                    Qidiruv yoki filter parametrlarini o‘zgartirib ko‘ring.
+                </p>
+
+                <a
+                    href="{% url 'car_list' %}"
+                    class="btn btn-primary mt-2"
+                >
+                    Barcha avtomobillar
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

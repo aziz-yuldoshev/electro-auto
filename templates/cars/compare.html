@@ -1,0 +1,682 @@
+{% extends 'base.html' %}
+
+{% block title %}Taqqoslash — ELECTRO AUTO{% endblock %}
+
+{% block content %}
+
+<style>
+    .compare-page {
+        padding: 70px 0;
+    }
+
+    .compare-header {
+        margin-bottom: 45px;
+    }
+
+    .compare-label {
+        color: #6366f1;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .compare-title {
+        color: #fff;
+        font-size: 42px;
+        font-weight: 800;
+        margin-top: 10px;
+    }
+
+    .compare-subtitle {
+        color: #9ca3af;
+        margin-top: 10px;
+    }
+
+    .compare-wrapper {
+        overflow-x: auto;
+        border: 1px solid #273244;
+        border-radius: 20px;
+        background: #0b1220;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+    }
+
+    .compare-table {
+        min-width: 950px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .compare-table th,
+    .compare-table td {
+        padding: 22px 20px;
+        border-bottom: 1px solid #273244;
+        border-right: 1px solid #273244;
+        vertical-align: middle;
+    }
+
+    .compare-table th:last-child,
+    .compare-table td:last-child {
+        border-right: none;
+    }
+
+    .compare-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .spec-title {
+        width: 180px;
+        min-width: 180px;
+        color: #9ca3af;
+        font-size: 14px;
+        font-weight: 600;
+        background: #0f172a;
+    }
+
+    .car-column {
+        width: 250px;
+        min-width: 250px;
+        background: #111827;
+        text-align: center;
+    }
+
+    .car-image {
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+        border-radius: 14px;
+        margin-bottom: 18px;
+    }
+
+    .car-placeholder {
+        height: 170px;
+        border-radius: 14px;
+        background: #0b1220;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+    }
+
+    .car-placeholder i {
+        font-size: 55px;
+        color: #4b5563;
+    }
+
+    .car-brand {
+        color: #6366f1;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .car-name {
+        color: #fff;
+        font-size: 21px;
+        font-weight: 800;
+        margin-top: 5px;
+    }
+
+    .car-year {
+        color: #6b7280;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .spec-value {
+        color: #f3f4f6;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .price-value {
+        color: #818cf8;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .spec-icon {
+        color: #6366f1;
+        margin-right: 8px;
+    }
+
+    .remove-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: #f87171;
+        border: 1px solid #7f1d1d;
+        border-radius: 9px;
+        padding: 8px 14px;
+        font-size: 13px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+    .remove-btn:hover {
+        color: #fff;
+        background: #7f1d1d;
+    }
+
+    .compare-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        gap: 15px;
+    }
+
+    .back-btn {
+        color: #d1d5db;
+        border: 1px solid #374151;
+        padding: 11px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+    .back-btn:hover {
+        color: #fff;
+        background: #1f2937;
+    }
+
+    .empty-state {
+        background: #0b1220;
+        border: 1px solid #273244;
+        border-radius: 20px;
+        padding: 80px 25px;
+        text-align: center;
+    }
+
+    .empty-state i {
+        font-size: 70px;
+        color: #374151;
+    }
+
+    .empty-state h3 {
+        color: #fff;
+        font-weight: 800;
+        margin-top: 20px;
+    }
+
+    .empty-state p {
+        color: #9ca3af;
+        max-width: 500px;
+        margin: 10px auto 25px;
+    }
+
+    @media (max-width: 768px) {
+        .compare-page {
+            padding: 45px 0;
+        }
+
+        .compare-title {
+            font-size: 32px;
+        }
+
+        .compare-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
+
+
+<div class="container compare-page">
+
+    <!-- HEADER -->
+
+    <div class="compare-header">
+
+        <div class="compare-label">
+            ELECTRO AUTO
+        </div>
+
+        <h1 class="compare-title">
+            Avtomobillarni taqqoslash
+        </h1>
+
+        <p class="compare-subtitle">
+            Elektromobillarni asosiy texnik xususiyatlari bo‘yicha
+            yonma-yon solishtiring.
+        </p>
+
+    </div>
+
+
+    {% if compare_cars %}
+
+        <!-- COMPARE TABLE -->
+
+        <div class="compare-wrapper">
+
+            <table class="compare-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="spec-title">
+                            Xususiyat
+                        </th>
+
+
+                        {% for car in compare_cars %}
+
+                            <th class="car-column">
+
+                                {% if car.main_image %}
+
+                                    <img
+                                        src="{{ car.main_image.url }}"
+                                        alt="{{ car.full_name }}"
+                                        class="car-image"
+                                    >
+
+                                {% else %}
+
+                                    <div class="car-placeholder">
+                                        <i class="bi bi-car-front"></i>
+                                    </div>
+
+                                {% endif %}
+
+
+                                <div class="car-brand">
+                                    {{ car.brand.name }}
+                                </div>
+
+                                <div class="car-name">
+                                    {{ car.model }}
+                                </div>
+
+                                <div class="car-year">
+                                    {{ car.year }} yil
+                                </div>
+
+                            </th>
+
+                        {% endfor %}
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <!-- PRICE -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-cash-stack spec-icon"></i>
+                            Narx
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value price-value">
+                                {{ car.price|floatformat:0 }} $
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- BATTERY -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-battery-charging spec-icon"></i>
+                            Batareya
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.battery_capacity }} kWh
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- RANGE -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-signpost-2 spec-icon"></i>
+                            Yurish masofasi
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.range_km }} km
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- POWER -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-lightning-charge spec-icon"></i>
+                            Quvvat
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.power_hp }} HP
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- TORQUE -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-gear-wide-connected spec-icon"></i>
+                            Moment
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.torque_nm }} Nm
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- ACCELERATION -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-speedometer2 spec-icon"></i>
+                            0–100 km/h
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.acceleration }} sek
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- TOP SPEED -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-speedometer spec-icon"></i>
+                            Maks. tezlik
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.top_speed }} km/h
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- DRIVE -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-car-front spec-icon"></i>
+                            Privod
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.get_drive_type_display }}
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- CHARGING POWER -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-plug spec-icon"></i>
+                            Zaryad quvvati
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.charging_power }} kW
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- CHARGING TIME -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-clock spec-icon"></i>
+                            Zaryad vaqti
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {% if car.charging_time %}
+                                    {{ car.charging_time }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- WEIGHT -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-box-seam spec-icon"></i>
+                            Og‘irlik
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.weight }} kg
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- TRUNK -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-box spec-icon"></i>
+                            Bagaj
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.trunk_capacity }} L
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- DIMENSIONS -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-rulers spec-icon"></i>
+                            O‘lchamlari
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+
+                                {{ car.length }}
+                                ×
+                                {{ car.width }}
+                                ×
+                                {{ car.height }}
+                                mm
+
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- STATUS -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            <i class="bi bi-circle-half spec-icon"></i>
+                            Holati
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+                                {{ car.get_status_display }}
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- REMOVE -->
+
+                    <tr>
+
+                        <td class="spec-title">
+                            Boshqaruv
+                        </td>
+
+                        {% for car in compare_cars %}
+
+                            <td class="spec-value">
+
+                                <a
+                                    href="{% url 'remove_compare' car.pk %}"
+                                    class="remove-btn"
+                                >
+                                    <i class="bi bi-x-lg"></i>
+                                    Olib tashlash
+                                </a>
+
+                            </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="compare-actions">
+
+            <a
+                href="{% url 'car_list' %}"
+                class="back-btn"
+            >
+                <i class="bi bi-arrow-left me-2"></i>
+                Avtomobillarga qaytish
+            </a>
+
+        </div>
+
+
+    {% else %}
+
+        <!-- EMPTY -->
+
+        <div class="empty-state">
+
+            <i class="bi bi-bar-chart"></i>
+
+            <h3>
+                Taqqoslash uchun avtomobil yo‘q
+            </h3>
+
+            <p>
+                Katalogdan avtomobil tanlang va
+                ularni yonma-yon taqqoslab ko‘ring.
+                Bir vaqtning o‘zida 4 tagacha avtomobil
+                taqqoslash mumkin.
+            </p>
+
+            <a
+                href="{% url 'car_list' %}"
+                class="btn btn-primary px-4 py-2"
+            >
+                <i class="bi bi-car-front me-2"></i>
+                Avtomobillarni ko‘rish
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

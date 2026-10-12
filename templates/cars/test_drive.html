@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block title %}Test Drive | ELECTRO AUTO{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-9">
+
+        <div class="text-center mb-5">
+            <span class="badge bg-primary px-3 py-2 mb-3">
+                ELECTRO AUTO
+            </span>
+
+            <h1 class="fw-bold">
+                Test Drive
+            </h1>
+
+            <p class="text-muted">
+                O‘zingizga yoqqan avtomobilni sinab ko‘ring
+            </p>
+        </div>
+
+
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+            <div class="row g-0">
+
+                <!-- CAR INFO -->
+
+                <div class="col-lg-5 bg-dark text-white p-4 p-lg-5">
+
+                    {% if car.main_image %}
+                        <img
+                            src="{{ car.main_image.url }}"
+                            alt="{{ car.full_name }}"
+                            class="img-fluid rounded-4 mb-4"
+                            style="width:100%; height:260px; object-fit:cover;"
+                        >
+                    {% endif %}
+
+                    <div class="small text-secondary mb-2">
+                        TANLANGAN AVTOMOBIL
+                    </div>
+
+                    <h2 class="fw-bold">
+                        {{ car.brand.name }}
+                        {{ car.model }}
+                    </h2>
+
+                    <div class="mt-4">
+
+                        <div class="d-flex justify-content-between border-bottom border-secondary py-3">
+                            <span class="text-secondary">
+                                Yil
+                            </span>
+                            <strong>
+                                {{ car.year }}
+                            </strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between border-bottom border-secondary py-3">
+                            <span class="text-secondary">
+                                Quvvat
+                            </span>
+                            <strong>
+                                {{ car.power_hp }} HP
+                            </strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between py-3">
+                            <span class="text-secondary">
+                                Zaxira
+                            </span>
+                            <strong>
+                                {{ car.range_km }} km
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <div class="col-lg-7 p-4 p-lg-5">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <h3 class="fw-bold mb-4">
+                        Ariza qoldiring
+                    </h3>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Ism va familiya *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                class="form-control form-control-lg"
+                                placeholder="Ism va familiyangiz"
+                                value="{{ request.user.get_full_name }}"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Telefon *
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                class="form-control form-control-lg"
+                                placeholder="+998 90 123 45 67"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Sana *
+                                </label>
+
+                                <input
+                                    type="date"
+                                    name="date"
+                                    class="form-control form-control-lg"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Vaqt *
+                                </label>
+
+                                <input
+                                    type="time"
+                                    name="time"
+                                    class="form-control form-control-lg"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Qo‘shimcha izoh
+                            </label>
+
+                            <textarea
+                                name="message"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Qo‘shimcha savol yoki izoh..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg w-100 fw-semibold"
+                        >
+                            <i class="bi bi-calendar-check me-2"></i>
+                            Test Drive buyurtma qilish
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

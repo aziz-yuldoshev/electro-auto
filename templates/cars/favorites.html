@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Sevimlilar — ELECTRO AUTO{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="mb-5">
+        <div class="text-primary fw-bold small">
+            ELECTRO AUTO
+        </div>
+
+        <h1 class="text-white fw-bold mt-2">
+            ❤️ Sevimli avtomobillar
+        </h1>
+
+        <p class="text-secondary">
+            Siz saqlagan avtomobillar shu yerda ko‘rinadi.
+        </p>
+    </div>
+
+
+    {% if favorite_cars %}
+
+        <div class="row g-4">
+
+            {% for favorite in favorite_cars %}
+
+                {% with car=favorite.car %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card bg-dark border-secondary h-100 overflow-hidden">
+
+                        {% if car.main_image %}
+
+                            <img
+                                src="{{ car.main_image.url }}"
+                                alt="{{ car.full_name }}"
+                                style="
+                                    width:100%;
+                                    height:230px;
+                                    object-fit:cover;
+                                "
+                            >
+
+                        {% else %}
+
+                            <div
+                                class="d-flex align-items-center justify-content-center"
+                                style="
+                                    height:230px;
+                                    background:#111827;
+                                "
+                            >
+                                <i class="bi bi-car-front text-secondary"
+                                   style="font-size:60px;"></i>
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="card-body p-4">
+
+                            <div class="text-primary small fw-bold">
+                                {{ car.brand.name }}
+                            </div>
+
+                            <h3 class="text-white fw-bold mt-2">
+                                {{ car.model }}
+                            </h3>
+
+                            <div class="text-secondary mb-3">
+                                {{ car.year }} yil
+                            </div>
+
+                            <div class="text-white fw-bold fs-4 mb-3">
+                                {{ car.price|floatformat:0 }} so'm
+                            </div>
+
+
+                            <div class="row text-secondary small mb-4">
+
+                                <div class="col-4">
+                                    🔋 {{ car.battery_capacity }} kWh
+                                </div>
+
+                                <div class="col-4">
+                                    🛣️ {{ car.range_km }} km
+                                </div>
+
+                                <div class="col-4">
+                                    ⚡ {{ car.power_hp }} HP
+                                </div>
+
+                            </div>
+
+
+                            <div class="d-flex gap-2">
+
+                                <a
+                                    href="{% url 'car_detail' car.pk %}"
+                                    class="btn btn-primary flex-grow-1"
+                                >
+                                    <i class="bi bi-eye me-1"></i>
+                                    Batafsil
+                                </a>
+
+                                <a
+                                    href="{% url 'toggle_favorite' car.pk %}"
+                                    class="btn btn-outline-danger"
+                                    title="Sevimlidan olib tashlash"
+                                >
+                                    <i class="bi bi-heart-fill"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="text-center py-5">
+
+            <i
+                class="bi bi-heart text-secondary"
+                style="font-size:70px;"
+            ></i>
+
+            <h3 class="text-white mt-4">
+                Hozircha sevimli avtomobil yo‘q
+            </h3>
+
+            <p class="text-secondary">
+                Katalogdan o‘zingizga yoqqan avtomobillarni saqlang.
+            </p>
+
+            <a
+                href="{% url 'car_list' %}"
+                class="btn btn-primary mt-3"
+            >
+                <i class="bi bi-car-front me-2"></i>
+                Avtomobillarni ko‘rish
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

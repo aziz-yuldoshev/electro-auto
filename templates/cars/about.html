@@ -1,0 +1,845 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Biz haqimizda — ELECTRO AUTO{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: #05070b;
+    }
+
+    /* =========================
+       VIDEO HERO
+    ========================= */
+
+    .about-video-hero {
+        position: relative;
+        min-height: 650px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .about-video-hero video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .about-video-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+            linear-gradient(
+                90deg,
+                rgba(5,7,11,0.97) 0%,
+                rgba(5,7,11,0.82) 38%,
+                rgba(5,7,11,0.45) 70%,
+                rgba(5,7,11,0.70) 100%
+            );
+    }
+
+    .about-video-content {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+        padding: 100px 24px;
+    }
+
+    .about-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border-radius: 50px;
+        background: rgba(76,169,255,0.12);
+        border: 1px solid rgba(76,169,255,0.35);
+        color: #4ca9ff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+    }
+
+    .about-badge i {
+        font-size: 16px;
+    }
+
+    .about-video-content h1 {
+        font-size: clamp(42px, 6vw, 82px);
+        line-height: 0.98;
+        font-weight: 900;
+        letter-spacing: -3px;
+        max-width: 850px;
+        margin-bottom: 25px;
+        color: #ffffff;
+    }
+
+    .about-video-content h1 span {
+        color: #4ca9ff;
+    }
+
+    .about-video-content p {
+        max-width: 650px;
+        color: rgba(255,255,255,0.72);
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 35px;
+    }
+
+    .about-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .about-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 14px 25px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.3s ease;
+    }
+
+    .about-btn-primary {
+        color: #ffffff;
+        background: #168cff;
+        border: 1px solid #168cff;
+        box-shadow: 0 10px 35px rgba(22,140,255,0.25);
+    }
+
+    .about-btn-primary:hover {
+        color: #ffffff;
+        background: #0877df;
+        transform: translateY(-3px);
+    }
+
+    .about-btn-outline {
+        color: #ffffff;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.18);
+        backdrop-filter: blur(10px);
+    }
+
+    .about-btn-outline:hover {
+        color: #ffffff;
+        background: rgba(255,255,255,0.12);
+        transform: translateY(-3px);
+    }
+
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    .about-section {
+        padding: 100px 0;
+    }
+
+    .about-container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 24px;
+    }
+
+    .section-label {
+        color: #4ca9ff;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        color: #ffffff;
+        font-size: clamp(32px, 4vw, 52px);
+        font-weight: 850;
+        letter-spacing: -1.5px;
+        margin-bottom: 18px;
+    }
+
+    .section-description {
+        max-width: 700px;
+        color: rgba(255,255,255,0.62);
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+
+    /* =========================
+       CARDS
+    ========================= */
+
+    .about-card {
+        height: 100%;
+        padding: 32px;
+        border-radius: 22px;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,0.07),
+                rgba(255,255,255,0.025)
+            );
+        border: 1px solid rgba(255,255,255,0.08);
+        transition: 0.35s ease;
+    }
+
+    .about-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(76,169,255,0.35);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    .about-card-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(76,169,255,0.12);
+        color: #4ca9ff;
+        font-size: 25px;
+        margin-bottom: 24px;
+    }
+
+    .about-card h3 {
+        color: #ffffff;
+        font-size: 21px;
+        font-weight: 750;
+        margin-bottom: 12px;
+    }
+
+    .about-card p {
+        color: rgba(255,255,255,0.58);
+        line-height: 1.7;
+        margin: 0;
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats-section {
+        padding: 75px 0;
+        background: rgba(255,255,255,0.025);
+        border-top: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .stat-number {
+        color: #ffffff;
+        font-size: 45px;
+        font-weight: 900;
+        letter-spacing: -2px;
+        margin-bottom: 5px;
+    }
+
+    .stat-number span {
+        color: #4ca9ff;
+    }
+
+    .stat-text {
+        color: rgba(255,255,255,0.52);
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       WHY US
+    ========================= */
+
+    .feature-list {
+        margin-top: 35px;
+    }
+
+    .feature-item {
+        display: flex;
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .feature-item:last-child {
+        border-bottom: none;
+    }
+
+    .feature-icon {
+        flex-shrink: 0;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(76,169,255,0.10);
+        color: #4ca9ff;
+    }
+
+    .feature-item h4 {
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .feature-item p {
+        color: rgba(255,255,255,0.55);
+        margin: 0;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       ENERGY CARD
+    ========================= */
+
+    .energy-card {
+        position: relative;
+        overflow: hidden;
+        padding: 55px;
+        border-radius: 28px;
+        background:
+            radial-gradient(
+                circle at 85% 20%,
+                rgba(76,169,255,0.22),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                #0b111b,
+                #07101c
+            );
+        border: 1px solid rgba(76,169,255,0.18);
+    }
+
+    .energy-icon {
+        font-size: 55px;
+        color: #4ca9ff;
+        margin-bottom: 20px;
+    }
+
+    .energy-card h2 {
+        color: #ffffff;
+        font-weight: 850;
+        font-size: 35px;
+        margin-bottom: 15px;
+    }
+
+    .energy-card p {
+        color: rgba(255,255,255,0.6);
+        max-width: 700px;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+
+    /* =========================
+       CTA
+    ========================= */
+
+    .about-cta {
+        padding: 110px 0;
+        text-align: center;
+    }
+
+    .about-cta-box {
+        padding: 70px 30px;
+        border-radius: 30px;
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                rgba(76,169,255,0.18),
+                transparent 45%
+            ),
+            rgba(255,255,255,0.035);
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .about-cta h2 {
+        color: #ffffff;
+        font-size: clamp(32px, 5vw, 55px);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        margin-bottom: 18px;
+    }
+
+    .about-cta p {
+        color: rgba(255,255,255,0.58);
+        max-width: 650px;
+        margin: 0 auto 30px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        .about-video-hero {
+            min-height: 600px;
+        }
+
+        .about-video-content {
+            padding: 80px 20px;
+        }
+
+        .about-video-content h1 {
+            letter-spacing: -2px;
+        }
+
+        .about-video-content p {
+            font-size: 16px;
+        }
+
+        .about-section {
+            padding: 70px 0;
+        }
+
+        .energy-card {
+            padding: 35px 25px;
+        }
+
+        .about-cta {
+            padding: 70px 0;
+        }
+
+        .stat-number {
+            font-size: 35px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     VIDEO HERO
+========================= -->
+
+<section class="about-video-hero">
+
+    <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+    >
+        <source
+            src="{% static 'videos/WVaTOLhT-Oo.mp4' %}"
+            type="video/mp4"
+        >
+
+        Brauzeringiz video formatini qo‘llab-quvvatlamaydi.
+    </video>
+
+    <div class="about-video-overlay"></div>
+
+    <div class="about-video-content">
+
+        <div class="about-badge">
+            <i class="bi bi-lightning-charge-fill"></i>
+            ELECTRIC FUTURE
+        </div>
+
+        <h1>
+            Kelajak
+            <span>bugundan</span>
+            boshlanadi.
+        </h1>
+
+        <p>
+            ELECTRO AUTO — zamonaviy elektromobillarni kashf qilish,
+            solishtirish va o‘zingizga mos avtomobilni topish uchun
+            yaratilgan zamonaviy platforma.
+        </p>
+
+        <div class="about-actions">
+
+            <a href="{% url 'car_list' %}" class="about-btn about-btn-primary">
+                <i class="bi bi-car-front-fill"></i>
+                Mashinalarni ko‘rish
+            </a>
+
+            <a href="#about-info" class="about-btn about-btn-outline">
+                <i class="bi bi-arrow-down"></i>
+                Batafsil
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT INFO
+========================= -->
+
+<section class="about-section" id="about-info">
+
+    <div class="about-container">
+
+        <div class="mb-5">
+
+            <div class="section-label">
+                Biz kimmiz?
+            </div>
+
+            <h2 class="section-title">
+                Avtomobil tanlashning
+                yangi avlodi.
+            </h2>
+
+            <p class="section-description">
+                Biz elektromobillar dunyosini yanada qulay va tushunarli
+                qilish uchun zamonaviy texnologiyalarni avtomobil sanoati
+                bilan birlashtiramiz.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-lg-4">
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+                        <i class="bi bi-car-front-fill"></i>
+                    </div>
+
+                    <h3>
+                        Zamonaviy avtomobillar
+                    </h3>
+
+                    <p>
+                        Turli brend va modellardagi zamonaviy
+                        elektromobillarni bir joyda ko‘rish imkoniyati.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h3>
+                        Oson tanlov
+                    </h3>
+
+                    <p>
+                        Qidiruv, filtr va qulay interfeys yordamida
+                        kerakli avtomobilni tez va oson toping.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <h3>
+                        Ishonchli platforma
+                    </h3>
+
+                    <p>
+                        Avtomobillar haqida kerakli ma'lumotlarni
+                        qulay va tushunarli ko‘rinishda taqdim etamiz.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section class="stats-section">
+
+    <div class="about-container">
+
+        <div class="row g-4">
+
+            <div class="col-6 col-lg-3">
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        50<span>+</span>
+                    </div>
+
+                    <div class="stat-text">
+                        Elektromobil modellari
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        15<span>+</span>
+                    </div>
+
+                    <div class="stat-text">
+                        Avtomobil brendlari
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        100<span>%</span>
+                    </div>
+
+                    <div class="stat-text">
+                        Elektr kelajak
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        24<span>/7</span>
+                    </div>
+
+                    <div class="stat-text">
+                        Platforma mavjudligi
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     WHY ELECTRO AUTO
+========================= -->
+
+<section class="about-section">
+
+    <div class="about-container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+
+                <div class="section-label">
+                    Nega ELECTRO AUTO?
+                </div>
+
+                <h2 class="section-title">
+                    Texnologiya.
+                    Qulaylik.
+                    Elektr kelajak.
+                </h2>
+
+                <p class="section-description">
+                    Biz foydalanuvchiga elektromobil tanlash jarayonini
+                    imkon qadar sodda va qulay qilishga e'tibor beramiz.
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Elektr energiyasi
+                            </h4>
+
+                            <p>
+                                Zamonaviy elektromobillar va ularning
+                                texnologiyalarini bir joyda kashf qiling.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-bar-chart-fill"></i>
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Taqqoslash
+                            </h4>
+
+                            <p>
+                                Turli avtomobillarni ko‘rib, o‘zingizga
+                                mos variantni tanlashni osonlashtiring.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Sevimlilar
+                            </h4>
+
+                            <p>
+                                Yoqtirgan avtomobillaringizni sevimlilarga
+                                saqlab, keyinroq qayta ko‘rib chiqing.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <div class="energy-card">
+
+                    <div class="energy-icon">
+                        <i class="bi bi-battery-charging"></i>
+                    </div>
+
+                    <h2>
+                        Yangi energiya.
+                    </h2>
+
+                    <p>
+                        Elektromobillar nafaqat transport vositasi,
+                        balki kelajakdagi harakatlanish texnologiyasining
+                        muhim qismidir. ELECTRO AUTO shu kelajakni sizga
+                        yanada yaqinlashtiradi.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="about-cta">
+
+    <div class="about-container">
+
+        <div class="about-cta-box">
+
+            <div class="section-label">
+                ELECTRO AUTO
+            </div>
+
+            <h2>
+                O‘zingizga mos
+                elektromobilni toping.
+            </h2>
+
+            <p>
+                Modellarni ko‘rib chiqing, ma'lumotlarni solishtiring
+                va kelajak avtomobilini bugun kashf qiling.
+            </p>
+
+            <a
+                href="{% url 'car_list' %}"
+                class="about-btn about-btn-primary"
+            >
+                <i class="bi bi-car-front-fill"></i>
+                Avtomobillarni ko‘rish
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
